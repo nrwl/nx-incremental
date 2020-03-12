@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "projects": {
+    "ngapp": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/ngapp",
+      "sourceRoot": "apps/ngapp/src",
+      "prefix": "incrementalexample",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/ngapp",
+            "index": "apps/ngapp/src/index.html",
+            "main": "apps/ngapp/src/main.ts",
+            "polyfills": "apps/ngapp/src/polyfills.ts",
+            "tsConfig": "apps/ngapp/tsconfig.app.json",
+            "aot": true,
+            "assets": ["apps/ngapp/src/favicon.ico", "apps/ngapp/src/assets"],
+            "styles": ["apps/ngapp/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/ngapp/src/environments/environment.ts",
+                  "with": "apps/ngapp/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "node ./tools/scripts/watch.js"
+              },
+              {
+                "command": "http-server dist/apps/ngapp --port=4200"
+              }
+            ]
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngapp:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/ngapp/tsconfig.app.json",
+              "apps/ngapp/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/ngapp/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/ngapp/jest.config.js",
+            "tsConfig": "apps/ngapp/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/ngapp/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "ngapp-e2e": {
+      "root": "apps/ngapp-e2e",
+      "sourceRoot": "apps/ngapp-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ngapp-e2e/cypress.json",
+            "tsConfig": "apps/ngapp-e2e/tsconfig.e2e.json",
+            "devServerTarget": "ngapp:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ngapp:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/ngapp-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/ngapp-e2e/**"]
+          }
+        }
+      }
+    },
+    "lib1": {
+      "projectType": "library",
+      "root": "libs/lib1",
+      "sourceRoot": "libs/lib1/src",
+      "prefix": "incrementalexample",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/lib1/tsconfig.lib.json",
+            "project": "libs/lib1/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/lib1/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lib1/tsconfig.lib.json",
+              "libs/lib1/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lib1/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lib1/jest.config.js",
+            "tsConfig": "libs/lib1/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lib1/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
+    },
+    "lib2": {
+      "projectType": "library",
+      "root": "libs/lib2",
+      "sourceRoot": "libs/lib2/src",
+      "prefix": "incrementalexample",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/lib2/tsconfig.lib.json",
+            "project": "libs/lib2/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/lib2/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lib2/tsconfig.lib.json",
+              "libs/lib2/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lib2/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lib2/jest.config.js",
+            "tsConfig": "libs/lib2/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lib2/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
+    },
+    "lib3": {
+      "projectType": "library",
+      "root": "libs/lib3",
+      "sourceRoot": "libs/lib3/src",
+      "prefix": "incrementalexample",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:package",
+          "options": {
+            "tsConfig": "libs/lib3/tsconfig.lib.json",
+            "project": "libs/lib3/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/lib3/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/lib3/tsconfig.lib.json",
+              "libs/lib3/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/lib3/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/lib3/jest.config.js",
+            "tsConfig": "libs/lib3/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/lib3/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "ngapp"
+}

@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "types": [],
+    "paths": {
+      "@incrementalexample/lib1": ["dist/libs/lib1"],
+      "@incrementalexample/lib2": ["dist/libs/lib2"],
+      "@incrementalexample/lib3": ["dist/libs/lib3"]
+    }
+  },
+  "files": ["src/main.ts", "src/polyfills.ts"]
+}
